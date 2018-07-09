@@ -48,12 +48,12 @@ public class AccountServiceDaoTest {
 		System.out.println("test case from dao to transfer fund");
 		assertEquals(false, dao.fundTransfer("deepak_12", "deepak@12", "1212345", "2343589", 7000));
 	}
-/*	@Test
+		@Test
 	public void testPrintTransactions() {
 
 		System.out.println("test case from dao to print transactions");
 		assertEquals(false, dao.printTransactions("deepak_12", "deepak@12", "1212345"));
 		
-	}*/
+	}
 
 }
