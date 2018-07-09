@@ -111,7 +111,7 @@ public class AccountServiceDao {
 
 	}
 
-	public boolean fundTranfer(String username, String password, String SenderAccountNumber,
+	public boolean fundTransfer(String username, String password, String SenderAccountNumber,
 			String RecieverAccountNumber, int balance) {
 
 		boolean senderFlag = false;

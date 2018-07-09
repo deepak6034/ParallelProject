@@ -29,7 +29,7 @@ public class AccountService {
 	public boolean fundTranfer(String username, String password, String SenderAccountNumber,
 			String RecieverAccountNumber, int balance) {
 
-		return dao.fundTranfer(username, password, SenderAccountNumber, RecieverAccountNumber, balance);
+		return dao.fundTransfer(username, password, SenderAccountNumber, RecieverAccountNumber, balance);
 	}
 
 	public boolean printTransactions(String username, String password, String accountNumber) {

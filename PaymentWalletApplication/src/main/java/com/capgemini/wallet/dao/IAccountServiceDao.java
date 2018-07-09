@@ -12,7 +12,7 @@ public interface IAccountServiceDao {
 
 	public boolean showBalance(String username, String password, String accountNumber);
 
-	public boolean fundTranfer(String username, String password, String SenderAccountNumber,
+	public boolean fundTransfer(String username, String password, String SenderAccountNumber,
 			String RecieverAccountNumber, int balance);
 
 	public boolean printTransactions(String username, String password, String accountNumber);

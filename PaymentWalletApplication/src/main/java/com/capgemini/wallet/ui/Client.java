@@ -1,6 +1,5 @@
 package com.capgemini.wallet.ui;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -228,7 +227,7 @@ public class Client {
 				System.out.println("Enter the fund you want to transfer");
 				bal = sc.nextInt();
 
-				if (service.fundTranfer(Username, Password, SenderAccountNumber, RecieverAccountNumber, bal)) {
+				if (service.fundTransfer(Username, Password, SenderAccountNumber, RecieverAccountNumber, bal)) {
 					System.out.println("fund tranfer successful");
 				} else {
 					System.out.println("fund tranfer failed");
