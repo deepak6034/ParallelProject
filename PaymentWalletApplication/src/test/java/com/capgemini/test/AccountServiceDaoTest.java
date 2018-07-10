@@ -24,7 +24,7 @@ public class AccountServiceDaoTest {
 	public void testDeposit() {
 
 		System.out.println("test case from dao to deposit");
-		assertEquals(false, dao.deposit("deepak_12", "deepak@12", "1212345", 5000));
+		assertEquals(false, dao.deposit("deepak_12", "deepak@13", "1212345", 5000));
 
 	}
 
