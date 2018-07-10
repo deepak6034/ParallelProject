@@ -1,6 +1,5 @@
 package com.capgemini.wallet.bean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDetails {
@@ -34,7 +33,7 @@ public class AccountDetails {
 
 	@Override
 	public String toString() {
-		return "AccountDetails [transactions=" + transactions + "]";
+		return "AccountDetails [transactions=" + transactions +"]";
 	}
 
 	public String getPassword() {
