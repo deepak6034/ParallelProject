@@ -1,12 +1,10 @@
 package com.capgemini.wallet.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.capgemini.wallet.bean.AccountDetails;
 
-public class AccountServiceDao {
+public class AccountServiceDao implements IAccountServiceDao{
 
 	int bal;
 	String str;

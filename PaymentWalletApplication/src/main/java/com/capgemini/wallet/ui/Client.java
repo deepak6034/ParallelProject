@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.capgemini.wallet.bean.AccountDetails;
-import com.capgemini.wallet.dao.AccountServiceDao;
 import com.capgemini.wallet.exception.AccountNotCreatedException;
 import com.capgemini.wallet.service.AccountDataValidation;
+import com.capgemini.wallet.service.AccountService;
+import com.capgemini.wallet.service.IAccountService;
 
 public class Client {
 
@@ -19,7 +20,7 @@ public class Client {
 		boolean flag;
 		int result = 0;
 		Scanner sc = new Scanner(System.in);
-		AccountServiceDao service = new AccountServiceDao();
+		IAccountService service = new AccountService();
 		AccountDataValidation validate = new AccountDataValidation();
 
 		while (true) {
