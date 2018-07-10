@@ -27,7 +27,7 @@ public class Client {
 
 			AccountDetails details = new AccountDetails();
 
-			System.out.println("\nWelcome to Technofitz Payment Wallet Application \n");
+			System.out.println("\n      Welcome to Technofitz Payment Wallet Application \n");
 			System.out.println("1. Create Account: ");
 			System.out.println("2. Show Balance ");
 			System.out.println("3. Deposit ");
