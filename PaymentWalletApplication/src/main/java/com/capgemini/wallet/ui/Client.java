@@ -14,9 +14,6 @@ public class Client {
 	public static void main(String[] args) {
 
 		int bal;
-		String Username;
-		String Password;
-		String accNo;
 		boolean flag;
 		int result = 0;
 		Scanner sc = new Scanner(System.in);
@@ -27,7 +24,7 @@ public class Client {
 
 			AccountDetails details = new AccountDetails();
 
-			System.out.println("\n      Welcome to Technofitz Payment Wallet Application \n");
+			System.out.println("\n     Welcome to Technofitz Payment Wallet Application \n");
 			System.out.println("1. Create Account: ");
 			System.out.println("2. Show Balance ");
 			System.out.println("3. Deposit ");
@@ -88,7 +85,7 @@ public class Client {
 					continue;
 				}
 
-				System.out.println("Enter your username: (Any capital or lower letter , (0-9) one number is mandatory , \n_ only this special character is allowed, username lengeth should be (6-20)");
+				System.out.println("Enter your username: \n(Any capital or lower letter , (0-9) one number is mandatory , only _ special character is allowed, username lengeth should be (6-20)");
 				String username = sc.nextLine();
 
 				boolean isValidUsername = validate.validateUsername(username);
@@ -98,7 +95,7 @@ public class Client {
 					continue;
 				}
 
-				System.out.println("Enter your password: (One capital and one lower letter mandatory, (0-9) one number is mandatory , \n@,#,$,% only this special character is allowed, username lengeth should be (6-20)");
+				System.out.println("Enter your password: \n(One capital and one lower letter mandatory, (0-9) one number is mandatory , @,#,$,% only this special character is allowed, username lengeth should be (6-20)");
 				String password = sc.nextLine();
 
 				boolean isValidPassword = validate.validatePassword(password);
@@ -146,16 +143,8 @@ public class Client {
 
 			case 2:
 				
-				System.out.println("Enter your username: ");
-				Username = sc.nextLine();
 
-				System.out.println("Enter your password: ");
-				Password = sc.nextLine();
-
-				System.out.println("Enter the Account Number: ");
-				accNo = sc.nextLine();
-
-				flag = service.showBalance(Username, Password, accNo);
+				flag = service.showBalance();
 
 				if (flag == false) {
 					System.out.println("Wrong Information...try again");
@@ -164,22 +153,14 @@ public class Client {
 				break;
 
 			case 3:
-
-				System.out.println("Enter your username: ");
-				Username = sc.nextLine();
-
-				System.out.println("Enter your password: ");
-				Password = sc.nextLine();
-
-				System.out.println("Enter the Account Number: ");
-				accNo = sc.nextLine();
-
+	
 				System.out.println("Enter the fund you want to deposit");
 				bal = sc.nextInt();
 
-				flag = service.deposit(Username, Password, accNo, bal);
-
+				flag = service.deposit(bal);
+				
 				if (flag == true) {
+					
 					System.out.println("Funds Deposited");
 				}
 
@@ -191,19 +172,10 @@ public class Client {
 
 			case 4:
 
-				System.out.println("Enter your username: ");
-				Username = sc.nextLine();
-
-				System.out.println("Enter your password: ");
-				Password = sc.nextLine();
-
-				System.out.println("Enter the Account Number: ");
-				accNo = sc.nextLine();
-
 				System.out.println("Enter the fund you want to withdraw");
 				bal = sc.nextInt();
 
-				flag = service.withdraw(Username, Password, accNo, bal);
+				flag = service.withdraw( bal);
 
 				if (flag == false) {
 					System.out.println("Wrong Information .. try again");
@@ -212,23 +184,16 @@ public class Client {
 				break;
 
 			case 5:
-
-				System.out.println("Enter your username: ");
-				Username = sc.nextLine();
-
-				System.out.println("Enter your password: ");
-				Password = sc.nextLine();
-
-				System.out.println("Enter your Account Number: ");
-				String SenderAccountNumber = sc.nextLine();
+				
+				
 
 				System.out.println("Enter Reciever Account Number: ");
-				String RecieverAccountNumber = sc.nextLine();
+				String recieverAccountNumber = sc.nextLine();
 
 				System.out.println("Enter the fund you want to transfer");
 				bal = sc.nextInt();
 
-				if (service.fundTransfer(Username, Password, SenderAccountNumber, RecieverAccountNumber, bal)) {
+				if (service.fundTransfer(recieverAccountNumber, bal)) {
 					System.out.println("fund tranfer successful");
 				} else {
 					System.out.println("fund tranfer failed");
@@ -238,16 +203,9 @@ public class Client {
 
 			case 6:
 
-				System.out.println("Enter your username: ");
-				Username = sc.nextLine();
+			
 
-				System.out.println("Enter your password: ");
-				Password = sc.nextLine();
-
-				System.out.println("Enter the Account Number: ");
-				accNo = sc.nextLine();
-
-				flag = service.printTransactions(Username, Password, accNo);
+				flag = service.printTransactions();
 
 				if (flag == false) {
 					System.out.println("Wrong Information .. try again");

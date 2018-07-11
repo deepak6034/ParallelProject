@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.capgemini.wallet.bean.AccountDetails;
 
-public class AccountDetailsTest {
+public class WalletDetailsTest {
 	
 	AccountDetails obj = new AccountDetails();
 

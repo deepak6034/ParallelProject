@@ -3,6 +3,9 @@ package com.capgemini.wallet.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.dao.AccountServiceDao;
+
 public class AccountDataValidation {
 
 	private Pattern pattern;
@@ -24,16 +27,15 @@ public class AccountDataValidation {
 		return matcher.matches();
 
 	}
-	
-	public boolean validateEmail(String email)
-	{
-		
-		pattern = Pattern.compile("\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b" , pattern.CASE_INSENSITIVE);
-		
+
+	public boolean validateEmail(String email) {
+
+		pattern = Pattern.compile("\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b", pattern.CASE_INSENSITIVE);
+
 		matcher = pattern.matcher(email);
-		
+
 		return matcher.matches();
-		
+
 	}
 
 	public boolean validatePhoneNumber(String phoneNumber) {
@@ -56,6 +58,19 @@ public class AccountDataValidation {
 			return true;
 		else
 			return false;
+	}
+
+	public boolean validateLogin(String username, String password) {
+		for (String uname : AccountServiceDao.account.keySet()) {
+			if (username.equals(uname)) {
+				if (AccountServiceDao.account.get(uname).getPassword().equals(password)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
+
 	}
 
 }

@@ -2,164 +2,148 @@ package com.capgemini.wallet.dao;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.capgemini.wallet.bean.AccountDetails;
+import java.util.Scanner;
 
-public class AccountServiceDao implements IAccountServiceDao{
+import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.service.AccountDataValidation;
+
+public class AccountServiceDao implements IAccountServiceDao {
 
 	int bal;
 	String str;
 	String str1;
-	Map<String, AccountDetails> account = new HashMap();
+	public static Map<String, AccountDetails> account = new HashMap();
+	AccountDetails details;
+	AccountDataValidation validate = new AccountDataValidation();
+	Scanner sc = new Scanner(System.in);
 
 	public int addAccountDetails(AccountDetails details) {
 
-		account.put(details.getAcccountNumber(), details);
+		account.put(details.getUsername(), details);
 		return 1;
 	}
 
-	public boolean deposit(String username, String password, String accountNumber, int balance) {
-		boolean flag = false;
+	public AccountDetails getLogin() {
+		System.out.println("Enter your username: ");
+		String username = sc.nextLine();
 
-		for (String accNo : account.keySet()) {
-			if (accountNumber.equals(accNo)) {
+		System.out.println("Enter your password: ");
+		String password = sc.nextLine();
 
-				if (account.get(accountNumber).getUsername().equals(username)) {
+		boolean flag = validate.validateLogin(username, password);
 
-					if (account.get(accountNumber).getPassword().equals(password)) {
+		if (flag)
+			return account.get(username);
 
-						bal = account.get(accountNumber).getBalance() + balance;
-						account.get(accountNumber).setBalance(bal);
-						flag = true;
+		else
+			return null;
+	}
 
-						str = balance + " deposited";
-						account.get(accountNumber).getTransactions().add(str);
+	public boolean deposit(int amount) {
 
-					}
-				}
-			}
+		details = getLogin();
 
+		if (details != null) {
+			bal = details.getBalance() + amount;
+			details.setBalance(bal);
+			str = amount + " deposited";
+			details.getTransactions().add(str);
+			return true;
+		} else {
+			return false;
 		}
-
-		return flag;
 
 	}
 
-	public boolean withdraw(String username, String password, String accountNumber, int balance) {
+	public boolean withdraw(int amount) {
+
+		details = getLogin();
+
+		if (details != null) {
+
+			if (details.getBalance() < 500) {
+				System.out.println("Can't withdraw ..balance is below 500");
+			}
+
+			else if (details.getBalance() >= amount) {
+
+				bal = details.getBalance() - amount;
+				details.setBalance(bal);
+				System.out.println("Withdrawal Done");
+
+				str = amount + " Withdrawn";
+				details.getTransactions().add(str);
+
+			}
+
+			else {
+				System.out.println("Insufficient Funds");
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean showBalance() {
 
 		boolean flag = false;
 
-		for (String accNo : account.keySet()) {
-			if (accountNumber.equals(accNo)) {
+		details = getLogin();
 
-				if (account.get(accountNumber).getUsername().equals(username)) {
+		if (details != null) {
 
-					if (account.get(accountNumber).getPassword().equals(password)) {
+			System.out.println("Balance = " + details.getBalance());
 
-						flag = true;
-
-						if (account.get(accountNumber).getBalance() < 500) {
-
-							System.out.println("Can't withdraw ..balance is below 500");
-						}
-
-						else if (account.get(accountNumber).getBalance() >= balance) {
-
-							bal = account.get(accountNumber).getBalance() - balance;
-							account.get(accountNumber).setBalance(bal);
-							System.out.println("Withdrawal Done");
-
-							str = balance + " Withdrawn";
-							account.get(accountNumber).getTransactions().add(str);
-
-						}
-
-						else {
-							System.out.println("Insufficient Funds");
-						}
-
-					}
-				}
-			}
-
+			return true;
+		} else {
+			return false;
 		}
-
-		return flag;
 
 	}
 
-	public boolean showBalance(String username, String password, String accountNumber) {
-
-		boolean flag = false;
-
-		for (String accNo : account.keySet()) {
-			if (accountNumber.equals(accNo)) {
-
-				if (account.get(accountNumber).getUsername().equals(username)) {
-
-					if (account.get(accountNumber).getPassword().equals(password)) {
-
-						flag = true;
-						System.out.println(account.get(accountNumber).getBalance());
-					}
-				}
-			}
-		}
-
-		return flag;
-
-	}
-
-	public boolean fundTransfer(String username, String password, String SenderAccountNumber,
-			String RecieverAccountNumber, int balance) {
+	public boolean fundTransfer(String recieverAccountNumber, int amount) {
 
 		boolean senderFlag = false;
 		boolean recieverFlag = false;
 
-		for (String accNo : account.keySet()) {
+		details = getLogin();
 
-			if (SenderAccountNumber.equals(accNo)) {
+		if (details != null) {
 
-				if (account.get(SenderAccountNumber).getUsername().equals(username)) {
+			senderFlag = true;
 
-					if (account.get(SenderAccountNumber).getPassword().equals(password)) {
+			if (details.getBalance() < 500) {
 
-						senderFlag = true;
+				System.out.println("Can't transfer ..balance is below 500");
+			}
 
-						if (account.get(SenderAccountNumber).getBalance() < 500) {
+			else if (details.getBalance() >= amount) {
 
-							System.out.println("Can't transfer ..balance is below 500");
-						}
+				for (String uname : account.keySet()) {
 
-						else if (account.get(SenderAccountNumber).getBalance() >= balance) {
+					if (account.get(uname).getAcccountNumber().equals(recieverAccountNumber)) {
 
-							for (String accNo1 : account.keySet()) {
+						recieverFlag = true;
+						bal = details.getBalance() - amount;
+						details.setBalance(bal);
 
-								if (RecieverAccountNumber.equals(accNo1)) {
+						bal = account.get(uname).getBalance() + amount;
+						account.get(uname).setBalance(bal);
 
-									recieverFlag = true;
-									bal = account.get(SenderAccountNumber).getBalance() - balance;
-									account.get(SenderAccountNumber).setBalance(bal);
-
-									bal = account.get(RecieverAccountNumber).getBalance() + balance;
-									account.get(RecieverAccountNumber).setBalance(bal);
-
-									str = balance + " transferred to account number : " + RecieverAccountNumber;
-									str1 = balance + " deposited from account number :" + SenderAccountNumber;
-									account.get(SenderAccountNumber).getTransactions().add(str);
-									account.get(RecieverAccountNumber).getTransactions().add(str1);
-
-								}
-							}
-						}
-
-						else {
-							System.out.println("Insufficient Funds");
-						}
+						str = amount + " transferred to account number : " + recieverAccountNumber;
+						str1 = amount + " deposited from account number :" + details.getAcccountNumber();
+						details.getTransactions().add(str);
+						account.get(uname).getTransactions().add(str1);
 
 					}
-
 				}
 			}
+
+			else {
+				System.out.println("Insufficient Funds");
+			}
+
 		}
 
 		if (!senderFlag) {
@@ -177,23 +161,17 @@ public class AccountServiceDao implements IAccountServiceDao{
 
 	}
 
-	public boolean printTransactions(String username, String password, String accountNumber) {
+	public boolean printTransactions() {
 		boolean flag = false;
 
-		for (String accNo : account.keySet()) {
-			if (accountNumber.equals(accNo)) {
+		details = getLogin();
 
-				if (account.get(accountNumber).getUsername().equals(username)) {
+		if (details != null) {
 
-					if (account.get(accountNumber).getPassword().equals(password)) {
+			flag = true;
 
-						flag = true;
+			System.out.println(details.getTransactions());
 
-						System.out.println(account.get(accountNumber).getTransactions());
-
-					}
-				}
-			}
 		}
 
 		return flag;
