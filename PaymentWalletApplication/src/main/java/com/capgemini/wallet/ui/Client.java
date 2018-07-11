@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import com.capgemini.wallet.bean.AccountDetails;
 import com.capgemini.wallet.exception.AccountNotCreatedException;
-import com.capgemini.wallet.service.AccountDataValidation;
+import com.capgemini.wallet.service.AccountValidation;
 import com.capgemini.wallet.service.AccountService;
 import com.capgemini.wallet.service.IAccountService;
 
@@ -18,7 +18,7 @@ public class Client {
 		int result = 0;
 		Scanner sc = new Scanner(System.in);
 		IAccountService service = new AccountService();
-		AccountDataValidation validate = new AccountDataValidation();
+		AccountValidation validate = new AccountValidation();
 
 		while (true) {
 

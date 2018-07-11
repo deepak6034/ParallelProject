@@ -2,7 +2,7 @@ package com.capgemini.wallet.dao;
 
 import com.capgemini.wallet.bean.AccountDetails;
 
-public interface IAccountServiceDao {
+public interface IAccountDao {
 
 	public int addAccountDetails(AccountDetails details);
 

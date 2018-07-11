@@ -1,12 +1,12 @@
 package com.capgemini.wallet.service;
 
 import com.capgemini.wallet.bean.AccountDetails;
-import com.capgemini.wallet.dao.AccountServiceDao;
-import com.capgemini.wallet.dao.IAccountServiceDao;
+import com.capgemini.wallet.dao.AccountDao;
+import com.capgemini.wallet.dao.IAccountDao;
 
 public class AccountService implements IAccountService{
 
-	IAccountServiceDao dao = new AccountServiceDao();
+	IAccountDao dao = new AccountDao();
 
 	public int addAccountDetails(AccountDetails details)
 	{

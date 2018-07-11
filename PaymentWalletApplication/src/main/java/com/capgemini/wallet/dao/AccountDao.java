@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.capgemini.wallet.bean.AccountDetails;
-import com.capgemini.wallet.service.AccountDataValidation;
+import com.capgemini.wallet.service.AccountValidation;
 
-public class AccountServiceDao implements IAccountServiceDao {
+public class AccountDao implements IAccountDao {
 
 	int bal;
 	String str;
 	String str1;
 	public static Map<String, AccountDetails> account = new HashMap();
 	AccountDetails details;
-	AccountDataValidation validate = new AccountDataValidation();
+	AccountValidation validate = new AccountValidation();
 	Scanner sc = new Scanner(System.in);
 
 	public int addAccountDetails(AccountDetails details) {

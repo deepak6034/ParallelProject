@@ -4,20 +4,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.capgemini.wallet.bean.AccountDetails;
-import com.capgemini.wallet.dao.AccountServiceDao;
+import com.capgemini.wallet.dao.AccountDao;
 
-public class AccountDataValidation {
+public class AccountValidation {
 
 	private Pattern pattern;
 	private Matcher matcher;
-	private static final String username_Pattern = "((?=.*\\d)(?=.*[_]).{6,20})";
-	private static final String password_Pattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
+	private static final String username_Pattern = "((?=.*\\d)(?=.*[_@#$%]).{6,20})";
+	private static final String password_Pattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_@#$%]).{6,20})";
 
 	public boolean validateUsername(String username) {
 		pattern = Pattern.compile(username_Pattern);
 		matcher = pattern.matcher(username);
 		return matcher.matches();
-
 	}
 
 	public boolean validatePassword(String password) {
@@ -46,7 +45,7 @@ public class AccountDataValidation {
 	}
 
 	public boolean validateAge(int age) {
-		if (age >= 15)
+		if (age > 15)
 			return true;
 		else
 			return false;
@@ -61,9 +60,9 @@ public class AccountDataValidation {
 	}
 
 	public boolean validateLogin(String username, String password) {
-		for (String uname : AccountServiceDao.account.keySet()) {
+		for (String uname : AccountDao.account.keySet()) {
 			if (username.equals(uname)) {
-				if (AccountServiceDao.account.get(uname).getPassword().equals(password)) {
+				if (AccountDao.account.get(uname).getPassword().equals(password)) {
 					return true;
 				}
 			}
