@@ -35,12 +35,6 @@ public class WalletDaoTest {
 		assertEquals(false, dao.withdraw(5000));
 	}
 
-	@Test
-	public void testShowBalance() {
-
-		System.out.println("test case from dao to show balance");
-		assertEquals(false, dao.showBalance());
-	}
 
 	@Test
 	public void testFundTranfer() {
@@ -49,11 +43,5 @@ public class WalletDaoTest {
 		assertEquals(false, dao.fundTransfer("2343589", 7000));
 	}
 
-	public void testPrintTransactions() {
-
-		System.out.println("test case from dao to print transactions");
-		assertEquals(false, dao.printTransactions());
-
-	}
 
 }

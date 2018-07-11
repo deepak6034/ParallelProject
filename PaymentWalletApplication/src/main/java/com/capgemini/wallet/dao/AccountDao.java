@@ -23,7 +23,7 @@ public class AccountDao implements IAccountDao {
 		return 1;
 	}
 
-	public AccountDetails getLogin() {
+	public boolean getLogin() {
 		System.out.println("Enter your username: ");
 		String username = sc.nextLine();
 
@@ -32,16 +32,26 @@ public class AccountDao implements IAccountDao {
 
 		boolean flag = validate.validateLogin(username, password);
 
-		if (flag)
-			return account.get(username);
+		if (flag) {
+			details = account.get(username);
+			return true;
+		} else {
+			details = null;
+			return false;
+		}
 
-		else
-			return null;
+	}
+
+	public void showBalance() {
+
+		if (details != null) {
+
+			System.out.println("Balance = " + details.getBalance());
+
+		}
 	}
 
 	public boolean deposit(int amount) {
-
-		details = getLogin();
 
 		if (details != null) {
 			bal = details.getBalance() + amount;
@@ -56,8 +66,6 @@ public class AccountDao implements IAccountDao {
 	}
 
 	public boolean withdraw(int amount) {
-
-		details = getLogin();
 
 		if (details != null) {
 
@@ -85,29 +93,10 @@ public class AccountDao implements IAccountDao {
 		}
 	}
 
-	public boolean showBalance() {
-
-		boolean flag = false;
-
-		details = getLogin();
-
-		if (details != null) {
-
-			System.out.println("Balance = " + details.getBalance());
-
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
 	public boolean fundTransfer(String recieverAccountNumber, int amount) {
 
 		boolean senderFlag = false;
 		boolean recieverFlag = false;
-
-		details = getLogin();
 
 		if (details != null) {
 
@@ -161,10 +150,8 @@ public class AccountDao implements IAccountDao {
 
 	}
 
-	public boolean printTransactions() {
+	public void printTransactions() {
 		boolean flag = false;
-
-		details = getLogin();
 
 		if (details != null) {
 
@@ -173,8 +160,6 @@ public class AccountDao implements IAccountDao {
 			System.out.println(details.getTransactions());
 
 		}
-
-		return flag;
 
 	}
 }
