@@ -14,9 +14,24 @@ public class AccountValidation {
 	private static final String password_Pattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_@#$%]).{6,20})";
 
 	public boolean validateUsername(String username) {
+		
+		boolean flag;
 		pattern = Pattern.compile(username_Pattern);
 		matcher = pattern.matcher(username);
-		return matcher.matches();
+		flag = matcher.matches();
+		
+		if(flag)
+		{
+			for(String uname : AccountDao.account.keySet())
+			{
+				if(username.equals(uname))
+				{
+					flag = false;
+				}
+			}
+		}
+		
+		return flag;
 	}
 
 	public boolean validatePassword(String password) {
@@ -62,7 +77,7 @@ public class AccountValidation {
 	public boolean validateLogin(String username, String password) {
 		for (String uname : AccountDao.account.keySet()) {
 			if (username.equals(uname)) {
-				if (AccountDao.account.get(uname).getPassword().equals(password)) {
+				if (AccountDao.account.get(uname).getAccountDetails().getLoginDetails().getPassword().equals(password)) {
 					return true;
 				}
 			}

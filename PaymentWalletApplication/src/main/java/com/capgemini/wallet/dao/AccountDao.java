@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.bean.CustomerDetails;
 import com.capgemini.wallet.service.AccountValidation;
 
 public class AccountDao implements IAccountDao {
@@ -12,14 +13,14 @@ public class AccountDao implements IAccountDao {
 	int bal;
 	String str;
 	String str1;
-	public static Map<String, AccountDetails> account = new HashMap();
-	AccountDetails details;
+	public static Map<String, CustomerDetails> account = new HashMap();
+	CustomerDetails customerDetails;
 	AccountValidation validate = new AccountValidation();
 	Scanner sc = new Scanner(System.in);
 
-	public int addAccountDetails(AccountDetails details) {
+	public int addAccountDetails(CustomerDetails customerDetails) {
 
-		account.put(details.getUsername(), details);
+		account.put(customerDetails.getAccountDetails().getLoginDetails().getUsername(), customerDetails);
 		return 1;
 	}
 
@@ -33,10 +34,10 @@ public class AccountDao implements IAccountDao {
 		boolean flag = validate.validateLogin(username, password);
 
 		if (flag) {
-			details = account.get(username);
+			customerDetails = account.get(username);
 			return true;
 		} else {
-			details = null;
+			customerDetails = null;
 			return false;
 		}
 
@@ -44,20 +45,20 @@ public class AccountDao implements IAccountDao {
 
 	public void showBalance() {
 
-		if (details != null) {
+		if (customerDetails != null) {
 
-			System.out.println("Balance = " + details.getBalance());
+			System.out.println("Balance = " + customerDetails.getAccountDetails().getBalance());
 
 		}
 	}
 
 	public boolean deposit(int amount) {
 
-		if (details != null) {
-			bal = details.getBalance() + amount;
-			details.setBalance(bal);
+		if (customerDetails != null) {
+			bal = customerDetails.getAccountDetails().getBalance() + amount;
+			customerDetails.getAccountDetails().setBalance(bal);
 			str = amount + " deposited";
-			details.getTransactions().add(str);
+			customerDetails.getAccountDetails().getLoginDetails().getTransaction().getTransactions().add(str);
 			return true;
 		} else {
 			return false;
@@ -67,20 +68,20 @@ public class AccountDao implements IAccountDao {
 
 	public boolean withdraw(int amount) {
 
-		if (details != null) {
+		if (customerDetails != null) {
 
-			if (details.getBalance() < 500) {
+			if (customerDetails.getAccountDetails().getBalance() < 500) {
 				System.out.println("Can't withdraw ..balance is below 500");
 			}
 
-			else if (details.getBalance() >= amount) {
+			else if (customerDetails.getAccountDetails().getBalance() >= amount) {
 
-				bal = details.getBalance() - amount;
-				details.setBalance(bal);
+				bal = customerDetails.getAccountDetails().getBalance() - amount;
+				customerDetails.getAccountDetails().setBalance(bal);
 				System.out.println("Withdrawal Done");
 
 				str = amount + " Withdrawn";
-				details.getTransactions().add(str);
+				customerDetails.getAccountDetails().getLoginDetails().getTransaction().getTransactions().add(str);
 
 			}
 
@@ -98,32 +99,35 @@ public class AccountDao implements IAccountDao {
 		boolean senderFlag = false;
 		boolean recieverFlag = false;
 
-		if (details != null) {
+		if (customerDetails != null) {
 
 			senderFlag = true;
 
-			if (details.getBalance() < 500) {
+			if (customerDetails.getAccountDetails().getBalance() < 500) {
 
 				System.out.println("Can't transfer ..balance is below 500");
 			}
 
-			else if (details.getBalance() >= amount) {
+			else if (customerDetails.getAccountDetails().getBalance() >= amount) {
 
 				for (String uname : account.keySet()) {
 
-					if (account.get(uname).getAcccountNumber().equals(recieverAccountNumber)) {
+					if (account.get(uname).getAccountDetails().getAcccountNumber().equals(recieverAccountNumber)) {
 
 						recieverFlag = true;
-						bal = details.getBalance() - amount;
-						details.setBalance(bal);
+						bal = customerDetails.getAccountDetails().getBalance() - amount;
+						customerDetails.getAccountDetails().setBalance(bal);
 
-						bal = account.get(uname).getBalance() + amount;
-						account.get(uname).setBalance(bal);
+						bal = account.get(uname).getAccountDetails().getBalance() + amount;
+						account.get(uname).getAccountDetails().setBalance(bal);
 
 						str = amount + " transferred to account number : " + recieverAccountNumber;
-						str1 = amount + " deposited from account number :" + details.getAcccountNumber();
-						details.getTransactions().add(str);
-						account.get(uname).getTransactions().add(str1);
+						str1 = amount + " deposited from account number :"
+								+ customerDetails.getAccountDetails().getAcccountNumber();
+						customerDetails.getAccountDetails().getLoginDetails().getTransaction().getTransactions()
+								.add(str);
+						account.get(uname).getAccountDetails().getLoginDetails().getTransaction().getTransactions()
+								.add(str1);
 
 					}
 				}
@@ -153,11 +157,12 @@ public class AccountDao implements IAccountDao {
 	public void printTransactions() {
 		boolean flag = false;
 
-		if (details != null) {
+		if (customerDetails != null) {
 
 			flag = true;
 
-			System.out.println(details.getTransactions());
+			System.out
+					.println(customerDetails.getAccountDetails().getLoginDetails().getTransaction().getTransactions());
 
 		}
 

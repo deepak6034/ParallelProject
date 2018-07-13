@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.bean.CustomerDetails;
+import com.capgemini.wallet.bean.Login;
+import com.capgemini.wallet.bean.Transaction;
 import com.capgemini.wallet.exception.AccountNotCreatedException;
 import com.capgemini.wallet.service.AccountValidation;
 import com.capgemini.wallet.service.AccountService;
@@ -15,14 +18,17 @@ public class Client {
 
 		int bal, choice;
 		boolean flag;
-		int result = 0;
+		int result = 0, initialBalance = 0;
 		Scanner sc = new Scanner(System.in);
 		IAccountService service = new AccountService();
 		AccountValidation validate = new AccountValidation();
 
 		while (true) {
 
-			AccountDetails details = new AccountDetails();
+			CustomerDetails customerDetails = new CustomerDetails();
+			AccountDetails accountDetails = new AccountDetails();
+			Login loginDetails = new Login();
+			Transaction transaction = new Transaction();
 
 			System.out.println("\n     Welcome to Technofitz Payment Wallet Application \n");
 			System.out.println("1. Create Account: ");
@@ -107,18 +113,26 @@ public class Client {
 
 				List<String> transactions = new ArrayList();
 
-				details.setAccountHolderName(accountHolderName);
-				details.setPhoneNumber(phoneNumber);
-				details.setEmail(email);
-				details.setAge(age);
-				details.setGender(gender);
-				details.setUsername(username);
-				details.setPassword(password);
-				details.setAcccountNumber(acccountNumber);
-				details.setTransactions(transactions);
+				customerDetails.setAccountHolderName(accountHolderName);
+				customerDetails.setPhoneNumber(phoneNumber);
+				customerDetails.setEmail(email);
+				customerDetails.setAge(age);
+				customerDetails.setGender(gender);
+
+				accountDetails.setAcccountNumber(acccountNumber);
+				accountDetails.setBalance(initialBalance);
+
+				loginDetails.setUsername(username);
+				loginDetails.setPassword(password);
+
+				transaction.setTransactions(transactions);
+
+				loginDetails.setTransaction(transaction);
+				accountDetails.setLoginDetails(loginDetails);
+				customerDetails.setAccountDetails(accountDetails);
 
 				if (isValidNumber && isValidAge && isValidGender) {
-					result = service.addAccountDetails(details);
+					result = service.addAccountDetails(customerDetails);
 				}
 
 				if (result == 1) {

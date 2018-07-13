@@ -1,10 +1,10 @@
 package com.capgemini.wallet.dao;
 
-import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.bean.CustomerDetails;
 
 public interface IAccountDao {
 
-	public int addAccountDetails(AccountDetails details);
+	public int addAccountDetails(CustomerDetails customerDetails);
 
 	public boolean getLogin();
 

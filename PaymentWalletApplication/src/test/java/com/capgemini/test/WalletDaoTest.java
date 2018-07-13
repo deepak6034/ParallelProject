@@ -5,11 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.bean.CustomerDetails;
 import com.capgemini.wallet.dao.AccountDao;
 
 public class WalletDaoTest {
 
-	AccountDetails details = new AccountDetails();
+	CustomerDetails details = new CustomerDetails();
 	AccountDao dao = new AccountDao();
 
 	@Test

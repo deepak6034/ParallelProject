@@ -1,6 +1,6 @@
 package com.capgemini.wallet.service;
 
-import com.capgemini.wallet.bean.AccountDetails;
+import com.capgemini.wallet.bean.CustomerDetails;
 import com.capgemini.wallet.dao.AccountDao;
 import com.capgemini.wallet.dao.IAccountDao;
 
@@ -8,8 +8,8 @@ public class AccountService implements IAccountService {
 
 	IAccountDao dao = new AccountDao();
 
-	public int addAccountDetails(AccountDetails details) {
-		return dao.addAccountDetails(details);
+	public int addAccountDetails(CustomerDetails customerDetails) {
+		return dao.addAccountDetails(customerDetails);
 	}
 
 	public boolean getLogin() {
