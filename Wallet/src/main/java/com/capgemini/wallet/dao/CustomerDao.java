@@ -7,15 +7,17 @@ import java.sql.Statement;
 
 import com.capgemini.wallet.bean.CustomerDetails;
 
-public class CustomerDao {
+public class CustomerDao implements ICustomerDao{
 
 	int status;
-
+	Connection con;
+	
 	public int addCustomerDetails(CustomerDetails customerDetails)
 
 	{
 		try {
-			Connection con = DBConnection.getConnection();
+			
+			con = DBConnection.getConnection();
 			String Query = "insert into Customer(name, phoneNumber, email, gender, age, accountNumber) values(?,?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(Query);
 			pstmt.setString(1, customerDetails.getName());
@@ -31,6 +33,17 @@ public class CustomerDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
+		finally {
+			try {
+				con.close();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 		return status;
 

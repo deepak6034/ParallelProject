@@ -7,18 +7,20 @@ import java.sql.SQLException;
 
 import com.capgemini.wallet.bean.CustomerDetails;
 
-public class AccountDao {
+public class AccountDao implements IAccountDao {
 
 	int status;
 	int bal;
 	boolean flag = false;
 	static String accountNumber;
+	Connection con;
 
 	public int addAccountDetails(CustomerDetails customerDetails)
 
 	{
 		try {
-			Connection con = DBConnection.getConnection();
+			
+			con = DBConnection.getConnection();
 			String Query = "insert into Account(accountHolderName, accountNumber, balance) values(?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(Query);
 			pstmt.setString(1, customerDetails.getAccountDetails().getAccountHolderName());
@@ -31,16 +33,27 @@ public class AccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		finally {
+
+			try {
+				con.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 		return status;
 
 	}
 
-	public void showBalance() {
+	public int showBalance() {
 
 		try {
 
-			Connection con = DBConnection.getConnection();
+			con = DBConnection.getConnection();
 			String Query = "select balance from Account where accountNumber=?";
 			PreparedStatement pstmt = con.prepareStatement(Query);
 			pstmt.setString(1, accountNumber);
@@ -49,7 +62,6 @@ public class AccountDao {
 
 			while (rs.next()) {
 				bal = rs.getInt("balance");
-				System.out.println("Balance = " + bal);
 			}
 
 		}
@@ -57,13 +69,26 @@ public class AccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		finally {
 
+			try {
+				con.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return bal;
 	}
 
 	public int deposit(int amount) {
 
 		try {
-			Connection con = DBConnection.getConnection();
+			
+			con = DBConnection.getConnection();
 			String Query = "update Account SET balance= balance+? where accountNumber=?";
 			PreparedStatement pstmt = con.prepareStatement(Query);
 
@@ -79,6 +104,17 @@ public class AccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		finally {
+
+			try {
+				con.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 		return status;
 	}
@@ -86,27 +122,102 @@ public class AccountDao {
 	public int withdraw(int amount) {
 
 		try {
-			Connection con = DBConnection.getConnection();
-			String Query = "update Account SET balance= IF(balance>?, balance-?, balance) where accountNumber=?";
-			PreparedStatement pstmt = con.prepareStatement(Query);
+			
+			con = DBConnection.getConnection();
+			if (showBalance() >= amount) {
+				String Query = "update Account SET balance = balance-? where accountNumber=?";
+				PreparedStatement pstmt = con.prepareStatement(Query);
 
-			pstmt.setInt(1, amount);
-			pstmt.setInt(2, amount);
-			pstmt.setString(3, accountNumber);
+				pstmt.setInt(1, amount);
+				pstmt.setString(2, accountNumber);
 
-			showBalance();
-			if (bal > amount)
 				status = pstmt.executeUpdate();
-			else
+				System.out.println("Remaining balance: " + showBalance());
+			}
+
+			else {
 				status = 0;
+			}
+		}
+
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+
+			try {
+				con.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return status;
+
+	}
+
+	public int fundTransfer(String recieverAccountNumber, int amount) {
+
+		try {
+
+			con = DBConnection.getConnection();
+			if (showBalance() >= amount) {
+				String recieverQuery = "select * from Account where accountNumber=?";
+				String SenderQuery = "update Account SET balance = balance-? where accountNumber=?";
+				PreparedStatement recieverPstmt = con.prepareStatement(recieverQuery);
+				PreparedStatement senderPstmt = con.prepareStatement(SenderQuery);
+
+				recieverPstmt.setString(1, recieverAccountNumber);
+
+				senderPstmt.setInt(1, amount);
+				senderPstmt.setString(2, accountNumber);
+
+				ResultSet rs = recieverPstmt.executeQuery();
+				while (rs.next()) {
+					flag = true;
+
+					String recieverQuery1 = "update Account SET balance=balance+? where accountNumber=?";
+					PreparedStatement recieverPstmt1 = con.prepareStatement(recieverQuery1);
+					recieverPstmt1.setInt(1, amount);
+					recieverPstmt1.setString(2, recieverAccountNumber);
+					recieverPstmt1.executeUpdate();
+
+					senderPstmt.executeUpdate();
+
+				}
+
+			}
+
+			else {
+				status = 0;
+			}
 
 		}
 
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		finally {
 
+			try {
+				con.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+
+		if (!flag) {
+			System.out.println("Wrong Reciever account number");
+		}
 		return status;
-
 	}
+	
+	
 }

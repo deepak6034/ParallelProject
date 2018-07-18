@@ -6,16 +6,12 @@ public interface IAccountService {
 
 	public int addAccountDetails(CustomerDetails customerDetails);
 
-	public boolean getLogin();
+	public int showBalance();
 
-	public void showBalance();
+	public int deposit(int amount);
 
-	public boolean deposit(int balance);
+	public int withdraw(int amount);
 
-	public boolean withdraw(int balance);
-
-	public boolean fundTransfer(String recieverAccountNumber, int balance);
-
-	public void printTransactions();
+	public int fundTransfer(String recieverAccountNumber, int amount);
 
 }

@@ -8,7 +8,7 @@ public class DBConnection {
 	
 	static Connection con;
 
-	public static Connection getConnection()
+	public static Connection getConnection() throws SQLException 
 	{
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -17,14 +17,12 @@ public class DBConnection {
 	
 		
 		catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-
 			
 		return con;
 		
+		
 	}
-	
 	
 }

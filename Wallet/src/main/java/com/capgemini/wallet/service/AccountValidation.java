@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.capgemini.wallet.bean.AccountDetails;
-import com.capgemini.wallet.dao.WalletDao;
 
 public class AccountValidation {
 
@@ -20,7 +19,7 @@ public class AccountValidation {
 		matcher = pattern.matcher(username);
 		flag = matcher.matches();
 		
-		if(flag)
+	/*	if(flag)
 		{
 			for(String uname : WalletDao.account.keySet())
 			{
@@ -29,7 +28,7 @@ public class AccountValidation {
 					flag = false;
 				}
 			}
-		}
+		}*/
 		
 		return flag;
 	}
@@ -76,17 +75,5 @@ public class AccountValidation {
 			return false;
 	}
 
-	public boolean validateLogin(String username, String password) {
-		for (String uname : WalletDao.account.keySet()) {
-			if (username.equals(uname)) {
-				if (WalletDao.account.get(uname).getAccountDetails().getLoginDetails().getPassword().equals(password)) {
-					return true;
-				}
-			}
-
-		}
-		return false;
-
-	}
 
 }
