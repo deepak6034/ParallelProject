@@ -19,7 +19,7 @@ public class AccountDao implements IAccountDao {
 
 	{
 		try {
-			
+
 			con = DBConnection.getConnection();
 			String Query = "insert into Account(accountHolderName, accountNumber, balance) values(?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(Query);
@@ -33,13 +33,12 @@ public class AccountDao implements IAccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
@@ -67,18 +66,13 @@ public class AccountDao implements IAccountDao {
 		}
 
 		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		finally {
-
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+			} catch (SQLException e1) {
 
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
 
 		return bal;
@@ -87,7 +81,7 @@ public class AccountDao implements IAccountDao {
 	public int deposit(int amount) {
 
 		try {
-			
+
 			con = DBConnection.getConnection();
 			String Query = "update Account SET balance= balance+? where accountNumber=?";
 			PreparedStatement pstmt = con.prepareStatement(Query);
@@ -104,13 +98,12 @@ public class AccountDao implements IAccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
@@ -122,7 +115,7 @@ public class AccountDao implements IAccountDao {
 	public int withdraw(int amount) {
 
 		try {
-			
+
 			con = DBConnection.getConnection();
 			if (showBalance() >= amount) {
 				String Query = "update Account SET balance = balance-? where accountNumber=?";
@@ -143,13 +136,12 @@ public class AccountDao implements IAccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
@@ -181,11 +173,22 @@ public class AccountDao implements IAccountDao {
 
 					String recieverQuery1 = "update Account SET balance=balance+? where accountNumber=?";
 					PreparedStatement recieverPstmt1 = con.prepareStatement(recieverQuery1);
+					
+					String transaction = amount + " deposited from account number: " + accountNumber;
+					
+					String transQuery = "Update transaction SET transactions=CONCAT(transactions, ?) where accountNumber=?";
+					PreparedStatement transPstmt = con.prepareStatement(transQuery);
+					
 					recieverPstmt1.setInt(1, amount);
 					recieverPstmt1.setString(2, recieverAccountNumber);
+					
+					transPstmt.setString(1, "\n" + transaction);
+					transPstmt.setString(2, recieverAccountNumber);
+					
 					recieverPstmt1.executeUpdate();
 
-					senderPstmt.executeUpdate();
+					status = senderPstmt.executeUpdate();
+					transPstmt.executeUpdate();
 
 				}
 
@@ -200,24 +203,21 @@ public class AccountDao implements IAccountDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
 		}
-		
 
 		if (!flag) {
 			System.out.println("Wrong Reciever account number");
 		}
 		return status;
 	}
-	
-	
+
 }

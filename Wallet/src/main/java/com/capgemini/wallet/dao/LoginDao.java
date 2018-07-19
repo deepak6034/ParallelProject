@@ -66,6 +66,8 @@ public class LoginDao implements ILoginDao {
 	public boolean authenticate(String username, String password) {
 		try {
 
+			flag = false;
+			
 			con = DBConnection.getConnection();
 			String Query = "select accountNumber from Login where username=? and password=?";
 			PreparedStatement pstmt = con.prepareStatement(Query);

@@ -35,8 +35,7 @@ public class TransactionDao implements ITransactionDao {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
@@ -48,25 +47,25 @@ public class TransactionDao implements ITransactionDao {
 	public void addTransactions(String transaction) {
 
 		try {
-			
+
 			con = DBConnection.getConnection();
 			String Query = "Update transaction SET transactions=CONCAT(transactions, ?) where accountNumber=?";
 			PreparedStatement pstmt = con.prepareStatement(Query);
 			pstmt.setString(1, "\n" + transaction);
 			pstmt.setString(2, accountNumber);
+
 			status = pstmt.executeUpdate();
 		}
 
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
@@ -92,13 +91,12 @@ public class TransactionDao implements ITransactionDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 

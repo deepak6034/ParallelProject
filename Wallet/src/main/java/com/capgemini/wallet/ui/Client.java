@@ -261,6 +261,9 @@ public class Client {
 					flag = accountService.fundTransfer(recieverAccountNumber, amount);
 					if (flag == 1) {
 						System.out.println("fund tranfer successful");
+						trans = amount + " transferrred to account number: " + recieverAccountNumber;
+						transactionService.addTransactions(trans);
+						
 					} else {
 						System.out.println("fund tranfer failed");
 					}
